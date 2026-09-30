@@ -1,0 +1,25 @@
+name: ai-gate
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  hooks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build diff
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git diff origin/${{ github.base_ref }}...HEAD > /tmp/pr.diff || git diff HEAD~1 > /tmp/pr.diff
+          else
+            git diff HEAD~1 > /tmp/pr.diff || true
+          fi
+      - name: Run hooks
+        run: python3 hooks/check_ai_diff.py --policy policies/default.json --diff-file /tmp/pr.diff --json

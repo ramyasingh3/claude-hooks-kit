@@ -1,0 +1,19 @@
+{
+  "block_secrets": true,
+  "require_lint": false,
+  "require_tests": false,
+  "max_changed_lines": 800,
+  "blocked_paths": [
+    ".env",
+    ".env.*",
+    "**/*credentials*",
+    "**/id_rsa",
+    "**/*.pem",
+    "**/secrets.yaml"
+  ],
+  "allowed_secret_examples": [
+    "sk-example",
+    "AKIAEXAMPLE",
+    "ghp_exampleexampleexampleexample0001"
+  ]
+}
